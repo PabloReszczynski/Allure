@@ -244,7 +244,8 @@ net = ItemKind
 light1 = ItemKind
   { isymbol  = symbolLight
   , iname    = "torch"
-  , ifreq    = [("common item", 100), ("light source", 100), ("wooden torch", 1)]
+  , ifreq    = [ ("common item", 100), ("light source", 100)
+               , ("wooden torch", 1) ]
   , iflavour = zipPlain [Brown]
   , icount   = 1 `dL` 4
   , irarity  = [(1, 15)]
@@ -256,7 +257,7 @@ light1 = ItemKind
   , ieffects = [Burn 1]
   , ifeature = [Lobable, Equipable, EqpSlot EqpSlotLightSource]
                  -- not Fragile; reusable flare
-  , idesc    = "A torch improvised with cloth soaked in tar on a stick."
+  , idesc    = "A puttering torch improvised with polymer sheets soaked in lubricant on a stick."
   , ikit     = []
   }
 light2 = ItemKind
@@ -272,7 +273,7 @@ light2 = ItemKind
   , iaspects = [AddShine 3, AddSight (-1)]
   , ieffects = [Burn 1, Paralyze 6, OnSmash (Explode "burning oil 3")]
   , ifeature = [Lobable, Fragile, Equipable, EqpSlot EqpSlotLightSource ]
-  , idesc    = "A sizable restaurant glass lamp filled with plant oil feeding a wick."
+  , idesc    = "A sizable restaurant glass lamp filled with plant oil feeding a slender wick."
   , ikit     = []
   }
 light3 = ItemKind
@@ -1458,7 +1459,7 @@ gem4 = gem1
 gem5 = gem1
   { isymbol  = symbolSpecial
   , iname    = "stimpack"
-  , ifreq    = [ ("treasure", 100), ("gem", 25), ("any jewelry", 25)
+  , ifreq    = [ ("treasure", 100), ("gem", 25), ("any jewelry", 10)
                , ("valuable", 100) ]
   , iflavour = zipPlain [BrYellow]
   , irarity  = [(1, 40), (10, 40)]

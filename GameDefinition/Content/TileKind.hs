@@ -24,11 +24,11 @@ content =
   [unknown, unknownOuterFence, basicOuterFence, wall, wallSuspect, wallObscured, wallObscuredDefaced, wallObscuredFrescoed, pillar, pillarCache, lampPost, signboardUnread, signboardRead, tree, treeBurnt, treeBurning, rubble, rubbleSpice, doorTrapped, doorClosed, stairsUp, stairsTrappedUp, stairsOutdoorUp, stairsGatedUp, stairsDown, stairsTrappedDown, stairsOutdoorDown, stairsGatedDown, escapeUp, escapeDown, escapeOutdoorDown, wallGlass, wallGlassSpice, pillarIce, pulpit, bush, bushBurnt, bushBurning, floorFog, floorFogDark, floorSmoke, floorSmokeDark, doorOpen, floorCorridor, floorArena, floorNoise, floorDirt, floorDirtSpice, floorActor, floorActorItem, floorRed, floorBlue, floorGreen, floorBrown, floorArenaShade ]
   ++ map makeDarkColor ldarkColorable
   -- Allure-specific
-  ++ [oriel, outerHullWall, doorlessWall, machineWall, wallObscuredSafety, wallObscured3dBillboard, rock, pillarCache2, stairsLiftUp, stairsLiftTrappedUp, stairsLiftDown, stairsLiftTrappedDown, escapeSpaceshipDown, floorWindow]
+  ++ [oriel, outerHullWall, doorlessWall, machineWall, rubbleSpiceBurning, wallObscuredSafety, wallObscured3dBillboard, rock, pillarCache2, stairsLiftUp, stairsLiftTrappedUp, stairsLiftDown, stairsLiftTrappedDown, escapeSpaceshipDown, floorWindow]
 
 unknown,    unknownOuterFence, basicOuterFence, wall, wallSuspect, wallObscured, wallObscuredDefaced, wallObscuredFrescoed, pillar, pillarCache, lampPost, signboardUnread, signboardRead, tree, treeBurnt, treeBurning, rubble, rubbleSpice, doorTrapped, doorClosed, stairsUp, stairsTrappedUp, stairsOutdoorUp, stairsGatedUp, stairsDown, stairsTrappedDown, stairsOutdoorDown, stairsGatedDown, escapeUp, escapeDown, escapeOutdoorDown, wallGlass, wallGlassSpice, pillarIce, pulpit, bush, bushBurnt, bushBurning, floorFog, floorFogDark, floorSmoke, floorSmokeDark, doorOpen, floorCorridor, floorArena, floorNoise, floorDirt, floorDirtSpice, floorActor, floorActorItem, floorRed, floorBlue, floorGreen, floorBrown, floorArenaShade :: TileKind
 -- Allure-specific
-oriel,       outerHullWall, doorlessWall, machineWall, wallObscuredSafety, wallObscured3dBillboard, rock, pillarCache2, stairsLiftUp, stairsLiftTrappedUp, stairsLiftDown, stairsLiftTrappedDown, escapeSpaceshipDown, floorWindow :: TileKind
+oriel,       outerHullWall, doorlessWall, machineWall, rubbleSpiceBurning, wallObscuredSafety, wallObscured3dBillboard, rock, pillarCache2, stairsLiftUp, stairsLiftTrappedUp, stairsLiftDown, stairsLiftTrappedDown, escapeSpaceshipDown, floorWindow :: TileKind
 
 ldarkColorable :: [TileKind]
 ldarkColorable = [tree, bush, floorCorridor, floorArena, floorNoise, floorDirt, floorDirtSpice, floorActor, floorActorItem, floorWindow]
@@ -90,7 +90,7 @@ wall = TileKind
   , tname    = "wall"
   , tfreq    = [ ("fillerWall", 1), ("legendLit", 100), ("legendDark", 100)
                , ("cachable deposit", 80), ("cachable jewelry", 80)
-               , ("stair terminal", 100)
+               , ("stair terminal", 30)
                , ("battleSet", 250), ("rectWindowsOver_%_Lit", 80) ]
   , tcolor   = BrWhite
   , tcolor2  = defFG
@@ -106,7 +106,7 @@ wallSuspect = TileKind  -- only on client
   , talter   = 2
   , tfeature = [ RevealAs "trapped door"
                , ObscureAs "obscured wall"
-                ]
+               ]
   }
 wallObscured = TileKind
   { tsymbol  = '#'
@@ -117,7 +117,6 @@ wallObscured = TileKind
   , talter   = 5
   , tfeature = [ Embed "scratch on wall"
                , HideAs "suspect wall"
-
                ]
   }
 wallObscuredDefaced = TileKind
@@ -129,7 +128,6 @@ wallObscuredDefaced = TileKind
   , talter   = 5
   , tfeature = [ Embed "obscene pictogram"
                , HideAs "suspect wall"
-
                ]
   }
 wallObscuredFrescoed = TileKind
@@ -141,7 +139,6 @@ wallObscuredFrescoed = TileKind
   , talter   = 5
   , tfeature = [ Embed "subtle fresco"
                , HideAs "suspect wall"
-
                ]  -- a bit beneficial, but AI would loop if allowed to trigger
                   -- so no @ConsideredByAI@
   }
@@ -185,7 +182,6 @@ signboardUnread = TileKind  -- client only, indicates never used by this faction
   , talter   = 5
   , tfeature = [ ConsideredByAI  -- changes after use, so safe for AI
                , RevealAs "signboard"  -- to display as hidden
-
                ]
   }
 signboardRead = TileKind
@@ -216,7 +212,7 @@ treeBurnt = tree
   }
 treeBurning = tree
   { tname    = "burning tree"
-  , tfreq    = [("zooSet", 70), ("tree with fire", 70)]
+  , tfreq    = [("zooSet", 40), ("tree with fire", 70)]
   , tcolor   = BrRed
   , tcolor2  = Red
   , talter   = 5
@@ -241,9 +237,9 @@ rubble = TileKind
 rubbleSpice = TileKind
   { tsymbol  = '&'
   , tname    = "rubble pile"
-  , tfreq    = [ ("smokeClumpOver_f_Lit", 1), ("emptySet", 1)
-               , ("emptyExitSet", 1), ("noiseSet", 10), ("zooSet", 100)
-               , ("ambushSet", 20) ]
+  , tfreq    = [ ("rubbleSpice", 1), ("smokeClumpOver_f_Lit", 1)
+               , ("emptySet", 1), ("emptyExitSet", 1), ("noiseSet", 9)
+               , ("zooSet", 100), ("ambushSet", 18), ("stair terminal", 30) ]
   , tcolor   = BrYellow
   , tcolor2  = Brown
   , talter   = 4  -- boss can dig through
@@ -413,7 +409,7 @@ bushBurnt = bush
   }
 bushBurning = bush
   { tname    = "burning bush"
-  , tfreq    = [("ambushSet", 40), ("zooSet", 300), ("bush with fire", 30)]
+  , tfreq    = [("ambushSet", 40), ("zooSet", 290), ("bush with fire", 30)]
   , tcolor   = BrRed
   , tcolor2  = Red
   , talter   = 5
@@ -545,6 +541,8 @@ floorArenaShade = floorActor
 
 -- ** Not walkable
 
+-- *** Not clear
+
 oriel = TileKind
   { tsymbol  = '%'  -- story-wise it's transparent, hence the symbol
   , tname    = "oriel"
@@ -567,15 +565,16 @@ doorlessWall = TileKind
   , talter   = 100
   , tfeature = [HideAs "fillerWall"]
   }
-machineWall = TileKind
-  { tsymbol  = '%'
-  , tname    = "hardware rack"
-  , tfreq    = [ ("noiseSet", 35), ("emptyExitSet", 7)
-               , ("doorlessWallOver_#", 80) ]
-  , tcolor   = White
-  , tcolor2  = BrBlack
-  , talter   = 100
-  , tfeature = [Spice, Clear]
+rubbleSpiceBurning = TileKind
+  { tsymbol  = '&'
+  , tname    = "burning installation"
+  , tfreq    = [ ("smokeClumpOver_f_Lit", 1), ("emptySet", 1)
+               , ("emptyExitSet", 1), ("noiseSet", 1)
+               , ("ambushSet", 2), ("zooSet", 40), ("stair terminal", 40) ]
+  , tcolor   = BrRed
+  , tcolor2  = Red
+  , talter   = 4  -- boss can dig through
+  , tfeature = [Spice, OpenTo "rubbleSpice", Embed "big fire"]
   }
 wallObscuredSafety = TileKind
   { tsymbol  = '#'
@@ -586,7 +585,6 @@ wallObscuredSafety = TileKind
   , talter   = 5
   , tfeature = [ Embed "ruined first aid kit"
                , HideAs "suspect wall"
-
                ]
   }
 wallObscured3dBillboard = TileKind
@@ -598,7 +596,6 @@ wallObscured3dBillboard = TileKind
   , talter   = 5
   , tfeature = [ Embed "3D display"
                , HideAs "suspect wall"
-
                ]
   }
 rock = pillar
@@ -656,6 +653,19 @@ floorWindow = floorArena
   , tcolor   = defFG
   , tcolor2  = defFG
   , tfeature = Embed "black starry sky" : tfeature floorCorridor
+  }
+
+-- *** Clear
+
+machineWall = TileKind
+  { tsymbol  = '%'
+  , tname    = "hardware rack"
+  , tfreq    = [ ("noiseSet", 35), ("emptyExitSet", 6)
+               , ("doorlessWallOver_#", 80) ]
+  , tcolor   = White
+  , tcolor2  = BrBlack
+  , talter   = 100
+  , tfeature = [Spice, Clear]
   }
 
 -- ** Walkable
